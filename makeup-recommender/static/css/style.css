@@ -96,7 +96,6 @@ nav {
     color: var(--primary-color);
 }
 
-/* Hero Section */
 .hero {
     background: linear-gradient(135deg, var(--primary-color), #ff6b8b);
     color: white;
@@ -119,7 +118,6 @@ nav {
     margin-bottom: 2rem;
 }
 
-/* Features Section */
 .features {
     display: flex;
     justify-content: center;
@@ -150,7 +148,6 @@ nav {
     margin-bottom: 1rem;
 }
 
-/* Quiz Styles */
 .quiz-container {
     max-width: 800px;
     margin: 2rem auto;

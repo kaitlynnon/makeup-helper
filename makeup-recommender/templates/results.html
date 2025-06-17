@@ -4,7 +4,6 @@
 <div class="results-container">
     <h2 class="mb-4">Your Personalized Recommendations</h2>
 
-    <!-- 🔍 Filters Section -->
     <div class="mb-4">
         <form id="filter-form" class="row g-3">
             <div class="col-md-4">
@@ -37,7 +36,6 @@
         </form>
     </div>
 
-    <!-- 🛍️ Product Grid -->
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="product-grid">
         {% for product in recommendations %}
         <div class="col product-card"
@@ -51,8 +49,6 @@
                     <p class="card-text">{{ product.description or 'No description available.' }}</p>
                     <p class="text-muted"><strong>{{ product.brand }}</strong></p>
                     <p class="price"><strong>${{ "%.2f"|format(product.price|float) }}</strong></p>
-
-                    <!-- ✅ Updated Favorite Button -->
                     <button class="btn btn-outline-danger favorite-btn"
                             data-product-id="{{ product.id }}"
                             data-product-name="{{ product.name }}"
@@ -74,7 +70,6 @@
 {% block scripts %}
 <script>
     $(document).ready(function () {
-        // ✅ Favorite Button Click Handler
         $('.favorite-btn').click(function (e) {
             e.preventDefault();
             const btn = $(this);
