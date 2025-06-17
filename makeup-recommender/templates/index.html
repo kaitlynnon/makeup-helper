@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center py-5">
+  <h1 class="display-4 mb-4">Find Your Perfect Makeup Match</h1>
+  <p class="lead mb-4">Get personalized makeup recommendations based on your skin type, tone, and preferences.</p>
+  <a href="{{ url_for('quiz') }}" class="btn btn-primary btn-lg mb-5">Get Started</a>
+
+  <div class="row justify-content-center">
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">🎯 Personalized Quiz</h5>
+          <p class="card-text">Answer a few questions about your skin and preferences to get customized recommendations.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">⭐ Celebrity Inspiration</h5>
+          <p class="card-text">Discover products used by your favorite celebrities and learn how to recreate their looks.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm">
+        <div class="card-body">
+          <h5 class="card-title">💖 Save Favorites</h5>
+          <p class="card-text">Keep track of products you love and want to purchase later.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+

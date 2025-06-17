@@ -1,0 +1,166 @@
+
+
+{% extends "base.html" %}
+
+{% block content %}
+<div class="quiz-container">
+    <h2>Makeup Preference Quiz</h2>
+    <p>Answer these questions to get personalized recommendations.</p>
+    
+    <div class="progress-bar">
+        <div class="progress" style="width: 25%;"></div>
+    </div>
+    
+    <form method="POST" action="{{ url_for('quiz') }}">
+        <div class="quiz-step active">
+            <h3>What is your skin type?</h3>
+            <div class="options">
+                <label>
+                    <input type="radio" name="skin_type" value="dry" required>
+                    <span>Dry</span>
+                </label>
+                <label>
+                    <input type="radio" name="skin_type" value="oily">
+                    <span>Oily</span>
+                </label>
+                <label>
+                    <input type="radio" name="skin_type" value="combination">
+                    <span>Combination</span>
+                </label>
+                <label>
+                    <input type="radio" name="skin_type" value="normal">
+                    <span>Normal</span>
+                </label>
+                <label>
+                    <input type="radio" name="skin_type" value="sensitive">
+                    <span>Sensitive</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="quiz-step">
+            <h3>What is your skin undertone?</h3>
+            <div class="options">
+                <label>
+                    <input type="radio" name="undertone" value="cool" required>
+                    <span>Cool (pink/red undertones)</span>
+                </label>
+                <label>
+                    <input type="radio" name="undertone" value="warm">
+                    <span>Warm (yellow/peach undertones)</span>
+                </label>
+                <label>
+                    <input type="radio" name="undertone" value="neutral">
+                    <span>Neutral (balanced undertones)</span>
+                </label>
+                <label>
+                    <input type="radio" name="undertone" value="olive">
+                    <span>Olive (green undertones)</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="quiz-step">
+            <h3>What color preferences do you have?</h3>
+            <p>Select all that apply</p>
+            <div class="options checkbox-options">
+                <label>
+                    <input type="checkbox" name="color_preferences" value="neutral">
+                    <span>Neutrals (beige, brown, taupe)</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="color_preferences" value="pink">
+                    <span>Pinks</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="color_preferences" value="red">
+                    <span>Reds</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="color_preferences" value="berry">
+                    <span>Berries</span>
+                </label>
+                <label>
+                    <input type="checkbox" name="color_preferences" value="bold">
+                    <span>Bold Colors</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="quiz-step">
+            <h3>What is your budget range?</h3>
+            <div class="options">
+                <label>
+                    <input type="radio" name="budget_range" value="low" required>
+                    <span>Drugstore ($5-$15)</span>
+                </label>
+                <label>
+                    <input type="radio" name="budget_range" value="mid">
+                    <span>Mid-Range ($16-$30)</span>
+                </label>
+                <label>
+                    <input type="radio" name="budget_range" value="high">
+                    <span>High-End ($31+)</span>
+                </label>
+                <label>
+                    <input type="radio" name="budget_range" value="luxury">
+                    <span>Luxury ($50+)</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="quiz-navigation">
+            <button type="button" class="btn btn-secondary" id="prev-btn" disabled>Back</button>
+            <button type="button" class="btn btn-primary" id="next-btn">Next</button>
+            <button type="submit" class="btn btn-primary" id="submit-btn" style="display: none;">Submit</button>
+        </div>
+    </form>
+</div>
+
+{% block scripts %}
+<script>
+    $(document).ready(function() {
+        const steps = $('.quiz-step');
+        let currentStep = 0;
+        
+        $('#next-btn').click(function() {
+            if (currentStep < steps.length - 1) {
+                steps.eq(currentStep).removeClass('active');
+                currentStep++;
+                steps.eq(currentStep).addClass('active');
+                
+                $('#prev-btn').prop('disabled', false);
+                
+                if (currentStep === steps.length - 1) {
+                    $('#next-btn').hide();
+                    $('#submit-btn').show();
+                }
+                
+                // Update progress bar
+                const progress = ((currentStep + 1) / steps.length) * 100;
+                $('.progress').css('width', progress + '%');
+            }
+        });
+        
+        $('#prev-btn').click(function() {
+            if (currentStep > 0) {
+                steps.eq(currentStep).removeClass('active');
+                currentStep--;
+                steps.eq(currentStep).addClass('active');
+                
+                $('#next-btn').show();
+                $('#submit-btn').hide();
+                
+                if (currentStep === 0) {
+                    $('#prev-btn').prop('disabled', true);
+                }
+                
+                // Update progress bar
+                const progress = ((currentStep + 1) / steps.length) * 100;
+                $('.progress').css('width', progress + '%');
+            }
+        });
+    });
+</script>
+{% endblock %}
+{% endblock %}

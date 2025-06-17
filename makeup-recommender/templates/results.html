@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="results-container">
+    <h2 class="mb-4">Your Personalized Recommendations</h2>
+
+    <!-- 🔍 Filters Section -->
+    <div class="mb-4">
+        <form id="filter-form" class="row g-3">
+            <div class="col-md-4">
+                <label for="filter-brand" class="form-label">Brand</label>
+                <select id="filter-brand" class="form-select">
+                    <option value="">All</option>
+                    {% for product in recommendations|unique(attribute='brand') %}
+                    <option value="{{ product.brand }}">{{ product.brand }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="filter-price" class="form-label">Price</label>
+                <select id="filter-price" class="form-select">
+                    <option value="">All</option>
+                    <option value="under-20">Under $20</option>
+                    <option value="20-40">$20 - $40</option>
+                    <option value="40+">Over $40</option>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <label for="filter-category" class="form-label">Category</label>
+                <select id="filter-category" class="form-select">
+                    <option value="">All</option>
+                    {% for product in recommendations|unique(attribute='category') %}
+                    <option value="{{ product.category }}">{{ product.category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </form>
+    </div>
+
+    <!-- 🛍️ Product Grid -->
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="product-grid">
+        {% for product in recommendations %}
+        <div class="col product-card"
+             data-brand="{{ product.brand }}"
+             data-price="{{ product.price }}"
+             data-category="{{ product.category }}">
+            <div class="card h-100 shadow-sm">
+                <img src="{{ url_for('static', filename='images/' + product.image) }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description or 'No description available.' }}</p>
+                    <p class="text-muted"><strong>{{ product.brand }}</strong></p>
+                    <p class="price"><strong>${{ "%.2f"|format(product.price|float) }}</strong></p>
+
+                    <!-- ✅ Updated Favorite Button -->
+                    <button class="btn btn-outline-danger favorite-btn"
+                            data-product-id="{{ product.id }}"
+                            data-product-name="{{ product.name }}"
+                            data-product-brand="{{ product.brand }}"
+                            data-product-price="{{ product.price }}"
+                            data-product-desc="{{ product.description }}"
+                            data-product-image="{{ product.image }}"
+                            data-product-category="{{ product.category }}">
+                        <i class="far fa-heart"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    $(document).ready(function () {
+        // ✅ Favorite Button Click Handler
+        $('.favorite-btn').click(function (e) {
+            e.preventDefault();
+            const btn = $(this);
+            $.ajax({
+                url: '/add-favorite',
+                method: 'POST',
+                data: {
+                    product_id: btn.data('product-id'),
+                    product_name: btn.data('product-name'),
+                    product_brand: btn.data('product-brand'),
+                    product_price: btn.data('product-price'),
+                    product_description: btn.data('product-desc'),
+                    product_image: btn.data('product-image'),
+                    product_category: btn.data('product-category')
+                },
+                success: function (response) {
+                    alert(response.message);
+                    btn.html('<i class="fas fa-heart"></i> Saved').addClass('saved');
+                }
+            });
+        });
+
+        // 🔍 Filter Logic
+        $('#filter-brand, #filter-price, #filter-category').on('change', function () {
+            const selectedBrand = $('#filter-brand').val();
+            const selectedPrice = $('#filter-price').val();
+            const selectedCategory = $('#filter-category').val();
+
+            $('.product-card').each(function () {
+                const card = $(this);
+                const brand = card.data('brand');
+                const price = parseFloat(card.data('price'));
+                const category = card.data('category');
+
+                let visible = true;
+
+                if (selectedBrand && brand !== selectedBrand) visible = false;
+                if (selectedPrice) {
+                    if (selectedPrice === 'under-20' && price >= 20) visible = false;
+                    else if (selectedPrice === '20-40' && (price < 20 || price > 40)) visible = false;
+                    else if (selectedPrice === '40+' && price <= 40) visible = false;
+                }
+                if (selectedCategory && category !== selectedCategory) visible = false;
+
+                card.toggle(visible);
+            });
+        });
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ celeb.name }}'s Makeup Look</h2>
+<p class="mb-4">{{ celeb.style }}</p>
+
+<h4>Get the Look</h4>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+    {% for product in recommendations %}
+    <div class="col">
+        <div class="card h-100 shadow-sm">
+            <img src="{{ url_for('static', filename='images/' + celeb.image) }}">
+            <div class="card-body">
+                <h5 class="card-title">{{ product.name }}</h5>
+                <p class="card-text">{{ product.description }}</p>
+                <p class="text-muted">{{ product.brand }} - <strong>${{ "%.2f"|format(product.price|float) }}</strong></p>
+                <button class="btn btn-outline-danger favorite-btn"
+                        data-product-id="{{ product.id }}"
+                        data-product-name="{{ product.name }}"
+                        data-product-brand="{{ product.brand }}"
+                        data-product-price="{{ product.price }}"
+                        data-product-desc="{{ product.description }}"
+                        data-product-image="{{ product.image }}"
+                        data-product-category="{{ product.category }}">
+                    <i class="far fa-heart"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function () {
+    $('.favorite-btn').click(function (e) {
+        e.preventDefault();
+
+        const btn = $(this);
+        $.ajax({
+            url: '/add-favorite',
+            method: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                product_id: btn.data('product-id'),
+                product_name: btn.data('product-name'),
+                product_brand: btn.data('product-brand'),
+                product_price: btn.data('product-price'),
+                product_description: btn.data('product-desc'),
+                product_image: btn.data('product-image'),
+                product_category: btn.data('product-category'),
+            }),
+            success: function (response) {
+                alert(response.message);
+                btn.html('<i class="fas fa-heart"></i> Saved').addClass('saved');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

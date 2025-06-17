@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="celebrities-container">
+    <h2>Select Your Favorite Celebrities</h2>
+    <p>Choose celebrities whose makeup styles you admire. We'll recommend products they use.</p>
+    
+    <form method="POST" action="{{ url_for('select_celebrities') }}">
+        <div class="celebrities-grid">
+            {% for celebrity in celebrities %}
+            <div class="celebrity-card">
+                <label>
+                    <input type="checkbox" name="celebrities" value="{{ celebrity.id }}">
+                    <div class="celebrity-image">
+                        <img src="{{ url_for('static', filename='images/' + celebrity.image) }}" alt="{{ celebrity.name }}" class="img-small">
+                    </div>
+                    <h3>{{ celebrity.name }}</h3>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="form-footer">
+            <button type="submit" class="btn btn-primary">Continue</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

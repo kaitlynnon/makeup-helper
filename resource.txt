@@ -1,0 +1,46 @@
+For all the prompts you have asked on an AI tool. Please state the prompt and the responses you got.
+
+prompt:
+"could you create a file for me with approx. 1000 makeup products?"
+
+response:
+Here is your generated file with 1,000 makeup products:
+👉 Download generated_products.json
+
+prompt:
+“How can I recommend products based on a selected celebrity’s style?”
+
+response:
+- Write a new route 
+- Filter product results using tags
+- Display those in a new HTML template
+
+prompt:
+“Why is my image not showing up on the website?”
+
+response:
+- Check the folder structure (static/images/)
+- Make sure the image file names matched the ones in my JSON
+- Verify that the path in url_for('static', filename=...) was correct
+
+
+
+Title + Links to Resources Used
+
+Flask Tutorial #1 - How to Make Websites with Python
+https://youtu.be/mqhxxeeTbu0?si=9kyS13Hj3-685ZEf 
+
+Full Flask Course For Python - From Basics To Deployment
+https://youtu.be/oQ5UfJqW5Jo?si=6WmObA7y4tqo2HDK
+
+Flask Tutorial #7 - Using SQLAlchemy Database
+https://www.youtube.com/watch?v=uZnp21fu8TQ
+
+Flask Tutorial #9 - Static Files (Custom CSS, Images & Javascript)
+https://www.youtube.com/watch?v=tXpFERibRaU
+
+Flask Tutorial #2 - HTML Templates
+https://www.youtube.com/watch?v=xIgPMguqyws
+
+Make A Python Website As Fast As Possible!
+https://www.youtube.com/watch?v=kng-mJJby8g
